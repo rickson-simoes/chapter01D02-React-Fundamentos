@@ -1,18 +1,34 @@
-import { HtmlHTMLAttributes } from "react";
+import { Button } from '../components/Button';
 
-interface GenreResponseProps {
-  id: number;
-  name: 'action' | 'comedy' | 'documentary' | 'drama' | 'horror' | 'family';
-  title: string;
+interface ISideBarProps {
+  genres: {
+    id: number,
+    title: string,
+    name: "action" | "comedy" | "documentary" | "drama" | "horror" | "family"
+  }[],
+  selectedGenreId: number;
+  setSelectedGenreId: (id: number) => void;
 }
 
-export function SideBar({children}:HtmlHTMLAttributes<GenreResponseProps>) {
+export function SideBar({genres, selectedGenreId, setSelectedGenreId}: ISideBarProps) {
+  function handleClickButton(id: number){
+    setSelectedGenreId(id);
+  }
+
   return (
     <nav className="sidebar">
     <span>Watch<p>Me</p></span>
 
     <div className="buttons-container">
-      {children}
+      {genres.map(genre => (
+        <Button
+          key={String(genre.id)}
+          title={genre.title}
+          iconName={genre.name}
+          onClick={() => handleClickButton(genre.id)}
+          selected={selectedGenreId === genre.id}
+        />
+      ))}
     </div>
 
   </nav>
